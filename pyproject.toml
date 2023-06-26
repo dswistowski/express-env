@@ -18,9 +18,12 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.11,<4.0"
+svarog = "^0.3.2"
+pyyaml = "^6.0"
 
 
 [tool.poetry.group.dev.dependencies]
+mypy = "^1.4.1"
 ruff = "^0.0.275"
 pre-commit = "^3.3.3"
 black = "^23.3.0"

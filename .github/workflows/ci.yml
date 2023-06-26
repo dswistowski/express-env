@@ -24,3 +24,5 @@ jobs:
         run: poetry run ruff check --format=github .
       - name: Run pytest
         run: poetry run pytest
+      - name: Typecheck
+        run:  poetry run mypy -p express_env --install-types --non-interactive

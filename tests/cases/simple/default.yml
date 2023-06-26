@@ -1,0 +1,6 @@
+env:
+  FOO: 12
+  BAR: true
+  LOREM:
+    type: const
+    value: ipsum
