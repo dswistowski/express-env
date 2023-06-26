@@ -22,5 +22,5 @@ jobs:
           poetry install
       - name: Run Ruff
         run: poetry run ruff check --format=github .
-      - name: Runt pytest
+      - name: Run pytest
         run: poetry run pytest
