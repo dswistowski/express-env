@@ -1,5 +1,5 @@
-from dataclasses import dataclass
 import typing as t
+from dataclasses import dataclass
 
 import yaml
 from svarog import Svarog
@@ -29,8 +29,5 @@ class Config:
 def load(file: t.TextIO) -> Config:
     raw_config = yaml.safe_load(file)
     return Config(
-        env={
-        name: forge_env_config( value)
-        for name, value in raw_config["env"].items()
-        }
+        env={name: forge_env_config(value) for name, value in raw_config["env"].items()}
     )

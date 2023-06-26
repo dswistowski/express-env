@@ -1,5 +1,5 @@
 import argparse
-from typing import TextIO, Literal
+from typing import Literal, TextIO
 
 from ..config import Config
 from ..render import render
