@@ -1,6 +1,7 @@
 from io import StringIO
 
-from express_env.config import Config, ConstEnv, load
+from express_env.config import Config, load
+from express_env.plugins import ConstPlugin
 
 
 def test_can_load_simple_config():
@@ -17,7 +18,7 @@ env:
     )
     assert config == Config(
         env={
-            "FOO": ConstEnv("bar"),
-            "BAZ": ConstEnv("qux"),
+            "FOO": ConstPlugin.Config("bar"),
+            "BAZ": ConstPlugin.Config("qux"),
         }
     )
