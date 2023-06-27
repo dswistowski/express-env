@@ -1,3 +1,7 @@
-export FOO=12
-export BAR=true
-export LOREM=ipsum
+FOO=12
+BAR=true
+LOREM=ipsum
+
+export FOO
+export BAR
+export LOREM
