@@ -1,6 +1,8 @@
 import typing as t
 from dataclasses import dataclass
 
+from express_env.plugins.base import Plugin
+
 
 @dataclass(frozen=True)
 class ConstEnv:
@@ -8,13 +10,31 @@ class ConstEnv:
     type: t.Literal["const"] = "const"
 
 
-def render_const(value: ConstEnv) -> str:
-    match value.value:
-        case bool() as v:
-            return "true" if v else "false"
-        case float() as v:
-            return "%.2f"
-        case int() as v:
-            return f"{v}"
-        case _ as v:
-            return v
+class ConstPlugin(Plugin[ConstEnv]):
+    Config = ConstEnv
+
+    def forge(self, data: dict[object, object]) -> ConstEnv:
+        match data:
+            case {"value": str() | int() | float() as v}:
+                return self.Config(v)
+        raise ValueError(f"Invalid config for const plugin, expected value: {data}")
+
+    @staticmethod
+    def render(config: ConstEnv, name: str) -> t.Iterator[str]:
+        yield f"export {name}={ConstPlugin._render_value(config.value)}"
+
+    @staticmethod
+    def _render_value(value: str | bool | int | float) -> str:
+        match value:
+            case bool() as v:
+                return "true" if v else "false"
+            case float() as v:
+                return "%.2f"
+            case int() as v:
+                return f"{v}"
+            case str() as v:
+                return v
+
+        raise ValueError(
+            f"Invalid value for const plugin, expected str, bool, int or float: {value}"
+        )

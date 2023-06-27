@@ -1,7 +1,14 @@
-from express_env.plugins.const import ConstEnv, render_const
+from express_env.plugins.base import PluginLibrary
+
+from .const import ConstPlugin
+from .vault import VaultPlugin
+
+library = PluginLibrary()
+library.register("const", ConstPlugin())
+library.register("vault", VaultPlugin())
 
 
 def init_plugins():
     from ..render import render
 
-    render.register(ConstEnv, render_const)
+    library.register_singledispatch(render.register)

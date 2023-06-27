@@ -4,9 +4,9 @@ from dataclasses import dataclass
 import yaml
 from svarog import Svarog
 
-from .plugins.const import ConstEnv
+from .plugins import library
 
-EnvConfig: t.TypeAlias = ConstEnv | str | bool | int | float
+EnvConfig: t.TypeAlias = t.Any | str | bool | int | float
 
 config_forge = Svarog()
 
@@ -14,11 +14,9 @@ config_forge = Svarog()
 def forge_env_config(value: t.Mapping[str, str] | str | bool | int | float):
     match value:
         case bool() | int() | float() | str():
-            return config_forge.forge(ConstEnv, value)
-        case {"type": "const", "value": str()}:
-            return ConstEnv(value=value["value"])
-
-    raise TypeError(f"Cannot forge {type} from {value}")
+            return library.get("const").forge({"value": value})
+        case {"type": str() as type_, **rest}:
+            return library.get(type_).forge(rest)
 
 
 @dataclass(frozen=True)

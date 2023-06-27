@@ -12,11 +12,12 @@ class GenerateNamespace(Namespace):
 
 
 def configure_parser(subparser: argparse._SubParsersAction):
-    generate = subparser.add_parser("generate", help="generate .env file")
-    generate.add_argument("output", type=argparse.FileType("w"), default="-")
+    generate = subparser.add_parser("generate", help="generate env.sh file")
+    generate.add_argument("--output", type=argparse.FileType("w"), default="-")
 
 
 def command(config: Config, namespace: GenerateNamespace):
     out = namespace.output
     for key, value in config.env.items():
-        out.write(f"{key}={render(value)}\n")
+        for line in render(value, key):
+            out.write(f"{line}\n")

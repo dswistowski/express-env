@@ -7,7 +7,7 @@ from .commands import generate
 from .config import load
 
 
-def main(args=None):
+def main(args=None) -> None:
     parser = argparse.ArgumentParser(
         description="Express Env CLI",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -24,11 +24,15 @@ def main(args=None):
     config = load(namespace.config)
     init_plugins()
 
-    if namespace.command == "generate":
-        generate_namespace: generate.GenerateNamespace = cast(
-            generate.GenerateNamespace, namespace
-        )
-        generate.command(config, generate_namespace)
+    try:
+        if namespace.command == "generate":
+            generate_namespace: generate.GenerateNamespace = cast(
+                generate.GenerateNamespace, namespace
+            )
+            generate.command(config, generate_namespace)
+    except Exception:
+        print(f"Error while executing command, used config: {config}")  # noqa: T201
+        raise
 
 
 if __name__ == "__main__":
