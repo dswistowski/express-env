@@ -1,0 +1,11 @@
+login:
+  vault:
+    address: http://vault.example.com:8200
+    method: github
+    token: ${GITHUB_PERSONAL_ACCESS_TOKEN}
+
+env:
+  FOO:
+    type: vault
+    path: secret/dev-uk/atlas/ATLAS__ATTACHMENTS__DOWNLOAD__KEY_ID
+    field: value

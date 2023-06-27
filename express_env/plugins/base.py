@@ -1,6 +1,8 @@
 from collections.abc import Callable, Iterator
 from typing import Any, Generic, Protocol, TypeVar
 
+from express_env.ast import EnvironmentAssigment
+
 ConfigType = TypeVar("ConfigType")
 
 
@@ -10,7 +12,7 @@ class Plugin(Protocol, Generic[ConfigType]):
     def forge(self, config: dict[object, object]) -> ConfigType:
         ...
 
-    def render(self, config: ConfigType, key: str) -> Iterator[str]:
+    def render(self, config: ConfigType, key: str) -> Iterator[EnvironmentAssigment]:
         ...
 
 

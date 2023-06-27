@@ -1,6 +1,7 @@
 import typing as t
 from dataclasses import dataclass
 
+from express_env import ast
 from express_env.plugins.base import Plugin
 
 
@@ -22,6 +23,10 @@ class VaultPlugin(Plugin[VaultEnv]):
         )
 
     @staticmethod
-    def render(config: VaultEnv, key) -> t.Iterator[str]:
-        yield f"{key}=$(vault read --field={config.field} {config.path})"
-        yield f"export {key}"
+    def render(config: VaultEnv, key) -> t.Iterator[ast.EnvironmentAssigment]:
+        yield ast.EnvironmentAssigment(
+            key,
+            ast.CommandSubstitution(
+                ast.Command("vault", ["read", "--field", config.field, config.path])
+            ),
+        )

@@ -1,6 +1,7 @@
 import typing as t
 from dataclasses import dataclass
 
+from express_env import ast
 from express_env.plugins.base import Plugin
 
 
@@ -20,8 +21,10 @@ class ConstPlugin(Plugin[ConstEnv]):
         raise ValueError(f"Invalid config for const plugin, expected value: {data}")
 
     @staticmethod
-    def render(config: ConstEnv, name: str) -> t.Iterator[str]:
-        yield f"export {name}={ConstPlugin._render_value(config.value)}"
+    def render(config: ConstEnv, name: str) -> t.Iterator[ast.EnvironmentAssigment]:
+        yield ast.EnvironmentAssigment(
+            name, ast.ConstValue(ConstPlugin._render_value(config.value))
+        )
 
     @staticmethod
     def _render_value(value: str | bool | int | float) -> str:
