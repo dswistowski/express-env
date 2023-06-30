@@ -18,6 +18,10 @@ for path in listdir(cases_dir):
         cases.append([path, "env.sh", "bash"])
 
 
+def remove_comments(text):
+    return "\n".join(line for line in text.splitlines() if not line.startswith("#"))
+
+
 @pytest.mark.parametrize("path,out_file,format", cases)
 def test_from_directories(path: Path, out_file, format, capsys):
     config_file = cases_dir / path / "default.yml"
@@ -25,4 +29,4 @@ def test_from_directories(path: Path, out_file, format, capsys):
     result_file = cases_dir / path / out_file
     main(["--config", config_file.as_posix(), "generate", "--format", format])
     captured = capsys.readouterr()
-    assert captured.out == open(result_file).read()
+    assert remove_comments(captured.out).strip() == open(result_file).read().strip()

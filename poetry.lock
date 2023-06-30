@@ -386,25 +386,14 @@ testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8-2020", "ini2toml[l
 testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
 
 [[package]]
-name = "svarog"
-version = "0.3.2"
-description = "Svarog allow to create object from non typed data"
-optional = false
-python-versions = ">=3.8,<4.0"
-files = [
-    {file = "svarog-0.3.2-py3-none-any.whl", hash = "sha256:747cb845ec13604e7697a11051b7861266c1ac7629eb0572ebe6fdf9d8503d4c"},
-    {file = "svarog-0.3.2.tar.gz", hash = "sha256:d65c6a4f364f9135539e6b93348bc08c668534cc5feb21641c69bcd52ffdc56d"},
-]
-
-[[package]]
 name = "typing-extensions"
-version = "4.6.3"
+version = "4.7.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "typing_extensions-4.6.3-py3-none-any.whl", hash = "sha256:88a4153d8505aabbb4e13aacb7c486c2b4a33ca3b3f807914a9b4c844c471c26"},
-    {file = "typing_extensions-4.6.3.tar.gz", hash = "sha256:d91d5919357fe7f681a9f2b5b4cb2a5f1ef0a1e9f59c4d8ff0d3491e05c0ffd5"},
+    {file = "typing_extensions-4.7.0-py3-none-any.whl", hash = "sha256:5d8c9dac95c27d20df12fb1d97b9793ab8b2af8a3a525e68c80e21060c161771"},
+    {file = "typing_extensions-4.7.0.tar.gz", hash = "sha256:935ccf31549830cda708b42289d44b6f74084d616a00be651601a4f968e77c82"},
 ]
 
 [[package]]
@@ -430,4 +419,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<4.0"
-content-hash = "dd525d92dd62c19b26425d8b1bb5c9b8102d82bed9be0e0fe2a648993974fd41"
+content-hash = "2afbfbb090c89db5fabd858e6cfb342d033507422b4338441002a37d91135147"

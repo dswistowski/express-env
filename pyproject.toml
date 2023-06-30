@@ -18,7 +18,6 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.11,<4.0"
-svarog = "^0.3.2"
 pyyaml = "^6.0"
 
 

@@ -33,3 +33,7 @@ class PluginLibrary:
     ) -> None:
         for plugin in self._plugins.values():
             register(plugin.Config, plugin.render)
+
+    @property
+    def plugins_names(self) -> list[str]:
+        return list(self._plugins.keys())
