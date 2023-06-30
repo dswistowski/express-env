@@ -12,14 +12,14 @@ class ConstEnv:
 
 
 class ConstPlugin(Plugin[ConstEnv]):
-    Config = ConstEnv
+    EnvConfig = ConstEnv
 
-    def forge(self, data: dict[object, object]) -> ConstEnv:
+    def env_config(self, data: dict[object, object]) -> ConstEnv:
         match data:
             case str() | int() | float() as v:
-                return self.Config(v)
+                return self.EnvConfig(v)
             case {"value": str() | int() | float() as v}:
-                return self.Config(v)
+                return self.EnvConfig(v)
         raise ValueError(f"Invalid config for const plugin, expected value: {data}")
 
     @staticmethod

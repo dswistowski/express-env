@@ -17,7 +17,7 @@ class Config:
 def parse_env_config(key: str, value: t.Any) -> EnvConfig:
     match value:
         case str() | int() | float() as value:
-            return library.get("const").forge({"value": value})
+            return library.get("const").env_config({"value": value})
         case {"type": str() as type_, **rest}:
             try:
                 plugin = library.get(type_)
@@ -26,7 +26,7 @@ def parse_env_config(key: str, value: t.Any) -> EnvConfig:
                     f"Unknown plugin {bold(type_)} for env variable {bold(key)}. "
                     f"Available plugins: {', '.join(map(bold, library.plugins_names))}"
                 ) from None
-            return plugin.forge(rest)
+            return plugin.env_config(rest)
         case dict():
             raise ValueError(f"Missing type for env variable {bold(key)}")
         case _:

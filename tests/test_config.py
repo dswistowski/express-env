@@ -18,7 +18,7 @@ env:
     )
     assert config == Config(
         env={
-            "FOO": ConstPlugin.Config("bar"),
-            "BAZ": ConstPlugin.Config("qux"),
+            "FOO": ConstPlugin.EnvConfig("bar"),
+            "BAZ": ConstPlugin.EnvConfig("qux"),
         }
     )

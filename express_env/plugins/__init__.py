@@ -11,6 +11,6 @@ library.register("1password", OnePasswordPlugin())
 
 
 def init_plugins():
-    from ..render import render
+    from ..render import to_ast
 
-    library.register_singledispatch(render.register)
+    library.register_singledispatch(to_ast.register)

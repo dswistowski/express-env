@@ -12,12 +12,12 @@ class VaultEnv:
 
 
 class VaultPlugin(Plugin[VaultEnv]):
-    Config = VaultEnv
+    EnvConfig = VaultEnv
 
-    def forge(self, data: dict[object, object]) -> VaultEnv:
+    def env_config(self, data: dict[object, object]) -> VaultEnv:
         match data:
             case {"path": str() as path, "field": str() as field}:
-                return self.Config(path, field)
+                return self.EnvConfig(path, field)
         raise ValueError(
             f"Invalid config for vault plugin, expected path and field: {data}"
         )
