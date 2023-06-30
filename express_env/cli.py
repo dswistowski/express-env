@@ -1,14 +1,15 @@
 import argparse
 import sys
-from typing import cast
 
 from express_env.plugins import init_plugins
+from express_env.terminal import bold
+from express_env.types import CommandError, Context, Success
 
-from .commands import generate
+from .commands import all_commands
 from .config import load
 
 
-def main(args=sys.argv[1:]) -> None:
+def main(args=sys.argv[1:]) -> bool:
     parser = argparse.ArgumentParser(
         description="Express Env CLI",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -19,7 +20,9 @@ def main(args=sys.argv[1:]) -> None:
     subparser = parser.add_subparsers(
         dest="command", description="subcommands", required=True
     )
-    generate.configure_parser(subparser)
+    for command in all_commands:
+        command_subparser = subparser.add_parser(command.name, help=command.help)
+        command.configure_subparser(command_subparser)
 
     namespace = parser.parse_args(args=args)
 
@@ -30,16 +33,26 @@ def main(args=sys.argv[1:]) -> None:
         exit(1)
     init_plugins()
 
-    try:
-        if namespace.command == "generate":
-            generate_namespace: generate.GenerateNamespace = cast(
-                generate.GenerateNamespace, namespace
-            )
-            generate.command(config, generate_namespace, args)
-    except Exception:
-        print(f"Error while executing command, used config: {config}")  # noqa: T201
-        raise
+    context = Context(
+        config=config,
+        args=args,
+    )
+
+    for command in all_commands:
+        if command.name == namespace.command:
+            result = command(context, namespace)
+
+    assert result
+    match result:
+        case Success():
+            return True
+        case CommandError(error):
+            print("Error while executing command: ", bold(error))  # noqa: T201
+            return False
+        case _:
+            raise NotImplementedError(f"Unknown result: {result}")
 
 
 if __name__ == "__main__":
-    main()
+    if not main():
+        exit(1)
