@@ -1,0 +1,10 @@
+login:
+  "1password":
+    account: foo-bar
+
+env:
+  FOO:
+    type: 1password
+    vault: "some vault"
+    item: "some item"
+    field: "some field"
