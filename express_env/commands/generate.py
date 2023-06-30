@@ -7,7 +7,7 @@ from typing import Literal, TextIO
 from .. import ast
 from ..ast import Command
 from ..config import Config
-from ..render import render
+from ..to_ast import to_ast
 from ..types import Namespace
 
 
@@ -25,13 +25,24 @@ def configure_parser(subparser: argparse._SubParsersAction):
     )
 
 
+def escape_bash(value: str) -> str:
+    if " " in value or '"' in value:
+        escaped = value.replace("$", "\\$").replace('"', '\\"')
+        return f'"{escaped}"'
+    return value
+
+
+def as_bash(command: Command) -> str:
+    return " ".join([command.command, *map(escape_bash, command.args)])
+
+
 def bash_render(lines: Sequence[ast.EnvironmentAssigment]) -> Iterator[str]:
     for assigment in lines:
         match assigment.value:
             case ast.ConstValue(value):
                 yield f"{assigment.variable}={value}\n"
             case ast.CommandSubstitution(command):
-                yield f"{assigment.variable}=$({command.render()})\n"
+                yield f"{assigment.variable}=$({as_bash(command)})\n"
     yield "\n"
     for assigment in lines:
         yield f"export {assigment.variable}\n"
@@ -57,7 +68,7 @@ def dotenv_renderer(lines: Sequence[ast.EnvironmentAssigment]) -> Iterator[str]:
 def command(config: Config, namespace: GenerateNamespace, args: Sequence[str]) -> None:
     out = namespace.output
     lines = list(
-        itertools.chain(*(render(value, key) for key, value in config.env.items()))
+        itertools.chain(*(to_ast(value, key) for key, value in config.env.items()))
     )
 
     if namespace.format == "dotenv":

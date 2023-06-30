@@ -3,16 +3,16 @@ from typing import Any, Generic, Protocol, TypeVar
 
 from express_env.ast import EnvironmentAssigment
 
-ConfigType = TypeVar("ConfigType")
+EnvConfigType = TypeVar("EnvConfigType")
 
 
-class Plugin(Protocol, Generic[ConfigType]):
-    Config: type[ConfigType]
+class Plugin(Protocol, Generic[EnvConfigType]):
+    EnvConfig: type[EnvConfigType]
 
-    def forge(self, config: dict[object, object]) -> ConfigType:
+    def env_config(self, config: dict[object, object]) -> EnvConfigType:
         ...
 
-    def render(self, config: ConfigType, key: str) -> Iterator[EnvironmentAssigment]:
+    def render(self, config: EnvConfigType, key: str) -> Iterator[EnvironmentAssigment]:
         ...
 
 
@@ -32,7 +32,7 @@ class PluginLibrary:
         self, register: Callable[[type, Callable], None]
     ) -> None:
         for plugin in self._plugins.values():
-            register(plugin.Config, plugin.render)
+            register(plugin.EnvConfig, plugin.render)
 
     @property
     def plugins_names(self) -> list[str]:
