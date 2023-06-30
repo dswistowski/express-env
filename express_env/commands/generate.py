@@ -7,7 +7,7 @@ from typing import Literal, TextIO
 from .. import ast
 from ..ast import Command
 from ..config import Config
-from ..render import to_ast
+from ..to_ast import to_ast
 from ..types import Namespace
 
 
